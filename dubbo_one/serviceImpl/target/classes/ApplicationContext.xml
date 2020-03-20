@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.3.xsd
+       http://code.alibabatech.com/schema/dubbo
+       http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+">
+
+    <context:component-scan base-package="com.zjq"/>
+
+    <!--整合dubbo-->
+    <!--找到注册中心，告诉他，我的端口是多少-->
+    <!--配置别名，目的是在后台可以看到这个服务的别名，好区别到底是谁，可自定义-->
+    <dubbo:application name="test1"/>
+    <!--配置注册中心-->
+    <!--address:注册中心的地址，protocal：注册中心的协议 -->
+    <dubbo:registry address="118.25.195.112:2181" protocol="zookeeper"/>
+    <!--告诉注册中心我是谁
+    interface代表的就是类型
+    ref代表的就是到底具体发布哪个服务
+    timeout连接超时时间
+    -->
+    <dubbo:service interface="com.zjq.TestService" ref="testServiceImpl" timeout="6000"/>
+    <!--配置我的端口，因为消费者想要连接我们，必须通过我们的ip和端口进行访问
+        我们在连接注册中心的时候注册中心就知道了我们的ip，但是服务的端口并不知道
+        所以要设置端口
+        端口可以随便写，但是不能被其他占用，一个dubbo对外发布的时候必须独占一个端口
+    -->
+    <dubbo:protocol name="dubbo" port="12345"/>
+
+</beans>

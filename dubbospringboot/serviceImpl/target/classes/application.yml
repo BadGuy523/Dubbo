@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: dubbo-demo
+server:
+  port: 9090
+dubbo:
+  scan:
+    base-packages: com.zjq    #这个的作用是用于扫描我们的dubbo的注解，比如service
+  application:
+    id: dubbo-provider
+    name: dubbo-provider
+  protocol:
+    id: dubbo
+    name: dubbo
+    port: 12345
+    status: server #表明是一个server
+  registry:
+    id: my-reg
+    address: zookeeper://118.25.195.112:2181
+#是否发布远程服务
+endpoints:
+  dubbo:
+    enabled: true
+#管理监控
+management:
+  port: 9091
+  health:
+    dubbo:
+      status:
+        extras: load,threadpool
+        defaults: memory
